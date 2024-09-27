@@ -1,0 +1,30 @@
+{
+	"files.eol": "\n",
+	"typescript.tsdk": "node_modules/typescript/lib",
+
+	"files.associations": {
+		".env.*": "dotenv",
+		"*.module.css": "scss"
+	},
+
+	"unocss.colorPreview": false,
+	"unocss.remToPxPreview": true,
+	"unocss.autocomplete.matchType": "fuzzy",
+	"unocss.autocomplete.maxItems": 200,
+
+	"editor.defaultFormatter": "dprint.dprint",
+	"editor.formatOnSave": true,
+
+	"javascript.preferences.importModuleSpecifier": "shortest",
+	"typescript.preferences.importModuleSpecifier": "shortest",
+
+	"[prisma]": { "editor.defaultFormatter": "Prisma.prisma" },
+
+	"[typescript]": { "editor.defaultFormatter": "dprint.dprint" },
+	"[typescriptreact]": { "editor.defaultFormatter": "dprint.dprint" },
+	"[javascript]": { "editor.defaultFormatter": "dprint.dprint" },
+	"[javascriptreact]": { "editor.defaultFormatter": "dprint.dprint" },
+
+	"[json]": { "editor.defaultFormatter": "dprint.dprint" },
+	"[jsonc]": { "editor.defaultFormatter": "dprint.dprint" }
+}

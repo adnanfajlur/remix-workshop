@@ -1,0 +1,30 @@
+{
+	"incremental": true,
+	"indentWidth": 2,
+	"useTabs": true,
+	"lineWidth": 180,
+  "typescript": {
+    "useTabs": true,
+		"quoteStyle": "preferSingle",
+		"quoteProps": "asNeeded",
+		"trailingCommas": "onlyMultiLine",
+		"semiColons": "asi",
+		"preferHanging": true,
+		"arrowFunction.useParentheses": "force",
+		"importDeclaration.preferSingleLine": true,
+		"importDeclaration.forceSingleLine": true,
+		"typeLiteral.separatorKind": "semiColon",
+		"jsx.quoteStyle": "preferDouble",
+		"memberExpression.preferSingleLine": false
+  },
+  "json": {},
+  "excludes": [
+    "**/node_modules",
+    "**/*-lock.json",
+		"dist"
+  ],
+  "plugins": [
+    "https://plugins.dprint.dev/typescript-0.93.0.wasm",
+    "https://plugins.dprint.dev/json-0.19.3.wasm"
+  ]
+}
