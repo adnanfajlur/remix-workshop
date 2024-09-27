@@ -1,8 +1,9 @@
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
-import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import '@mantine/core/styles.css'
+import 'virtual:uno.css'
 
+import { ColorSchemeScript, MantineProvider } from '@mantine/core'
 import type { LinksFunction } from '@remix-run/node'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
 import { theme } from './configs/theme.config'

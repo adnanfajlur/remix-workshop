@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 
 export default function Index() {
 	return (
-		<div className="flex h-screen items-center justify-center">
+		<div className="flex flex-col h-screen items-center justify-center gap-4">
 			<p>Hello world</p>
 			<Button>Click me</Button>
 		</div>
