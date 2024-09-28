@@ -13,6 +13,14 @@ export default defineConfig({
 				unstable_optimizeDeps: true,
 				unstable_singleFetch: true,
 			},
+			routes(defineRoutes) {
+				return defineRoutes((route) => {
+					route('/auth', 'routes/auth/auth.route.tsx')
+					route('/', 'routes/layout.route.tsx', () => {
+						route('', 'routes/chat/chat.route.tsx', { index: true })
+					})
+				})
+			},
 		}),
 		unoCss(),
 		tsconfigPaths(),
