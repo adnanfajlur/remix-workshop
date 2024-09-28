@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz()
+
+  authProviders AuthProvider[] @relation("auth_providers__user")
+  sessions      Session[]      @relation("sessions__user")
+
+  @@map("users")
+}
+
+model AuthProvider {
+  id             String   @id @default(uuid()) @db.Uuid
+  providerId     String   @map("provider_id")
+  providerUserId String   @map("provider_user_id")
+  userId         String   @map("user_id") @db.Uuid
+  createdAt      DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  user User @relation("auth_providers__user", fields: [userId], references: [id])
+
+  @@unique([providerId, providerUserId])
+  @@index([userId])
+  @@map("auth_providers")
+}
+
+model Session {
+  id        String   @id
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz()
+
+  user User @relation("sessions__user", fields: [userId], references: [id])
+
+  @@index([userId])
+  @@map("sessions")
+}
