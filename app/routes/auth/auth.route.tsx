@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { yupAction } from '~/utils/yup-action.util'
 
 export async function loader({ request }: LoaderFunctionArgs) {
+	throw new Error('Something wrong, the error from loader')
 	return null
 }
 
@@ -17,8 +18,6 @@ export async function action({ request }: ActionFunctionArgs) {
 	throw new Error('Something wrong')
 	try {
 		const data = await yupAction(request, authSchema)
-
-		console.log('logdev', data)
 
 		return json(data)
 	} catch (error) {

@@ -3,7 +3,7 @@
 import '@mantine/core/styles.css'
 import 'virtual:uno.css'
 
-import { ColorSchemeScript, MantineColorScheme, MantineProvider } from '@mantine/core'
+import { Button, ColorSchemeScript, Container, Group, MantineColorScheme, MantineProvider, Text, Title } from '@mantine/core'
 import type { LinksFunction } from '@remix-run/node'
 import { isRouteErrorResponse, Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react'
 import { theme, themeVarResolver } from './libs/theme.lib'
@@ -53,7 +53,6 @@ export default function App() {
 
 export function ErrorBoundary() {
 	const error = useRouteError()
-	console.log('logdev', error)
 
 	if (isRouteErrorResponse(error)) {
 		return (
@@ -64,20 +63,26 @@ export function ErrorBoundary() {
 				<p>{error.data}</p>
 			</div>
 		)
-	} else if (error instanceof Error) {
+	}
+
+	if (error instanceof Error) {
 		return (
-			<div>
-				<h1>Error</h1>
-				<p>{error.message}</p>
-				{error.stack && (
-					<>
-						<p>The stack trace is:</p>
-						<pre>{error.stack}</pre>
-					</>
-				)}
+			<div className="pt-[80px] pb-[120px] bg-blue-6">
+				<Container>
+					<div className="text-center text-[13.75rem] text-blue-3 font-900 leading-none mb-12">500</div>
+				</Container>
+				<Title>Something bad just happened...</Title>
+				<Text size="lg" ta="center">
+					Our servers could not handle your request. Don&apos;t worry, our development team was already notified. Try refreshing the page.
+				</Text>
+				<Group justify="center">
+					<Button variant="white" size="md">
+						Refresh the page
+					</Button>
+				</Group>
 			</div>
 		)
-	} else {
-		return <h1>Unknown Error</h1>
 	}
+
+	return <h1>Unknown Error</h1>
 }
