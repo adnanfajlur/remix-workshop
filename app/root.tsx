@@ -1,12 +1,12 @@
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css'
-import 'virtual:uno.css'
+import './root.css' // should be the last css import
 
 import { Button, ColorSchemeScript, Container, Group, MantineColorScheme, MantineProvider, Text, Title } from '@mantine/core'
 import type { LinksFunction } from '@remix-run/node'
 import { isRouteErrorResponse, Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react'
-import { theme, themeVarResolver } from './libs/theme.lib'
+import { theme, themeVarResolver } from './libs/theme'
 
 export const links: LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },

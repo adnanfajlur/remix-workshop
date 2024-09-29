@@ -1,8 +1,8 @@
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma'
 import { GitHub } from 'arctic'
 import { Lucia } from 'lucia'
-import { serverEnv } from '~/configs/server-env.config.server'
-import { prisma } from './prisma.lib.server'
+import { serverEnv } from '~/configs/server-env.server'
+import { prisma } from './prisma.server'
 
 // const adapter = new BetterSQLite3Adapter(db); // your adapter
 const adapter = new PrismaAdapter(prisma.session, prisma.user)

@@ -14,11 +14,6 @@
 		"node_modules/@mantine/core/styles.css"
 	],
 
-	"unocss.colorPreview": false,
-	"unocss.remToPxPreview": true,
-	"unocss.autocomplete.matchType": "fuzzy",
-	"unocss.autocomplete.maxItems": 200,
-
 	"editor.defaultFormatter": "dprint.dprint",
 	"editor.formatOnSave": true,
 

@@ -3,7 +3,7 @@ import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@remi
 import { Form, json, Link, useActionData, useFetcher } from '@remix-run/react'
 import { IconBrandGithub, IconBrandGoogle } from '@tabler/icons-react'
 import * as yup from 'yup'
-import { yupAction } from '~/utils/yup-action.util'
+import { yupAction } from '~/utils/yup-action'
 
 export async function loader({ request }: LoaderFunctionArgs) {
 	throw new Error('Something wrong, the error from loader')
