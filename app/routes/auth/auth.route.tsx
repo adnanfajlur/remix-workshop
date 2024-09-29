@@ -1,14 +1,29 @@
-import { Button } from '@mantine/core'
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import { prisma } from '~/libs/prisma.lib.server'
+import { Button, Paper, Text, Title } from '@mantine/core'
+import type { ActionFunctionArgs, LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import { Form, json, Link, useActionData, useFetcher } from '@remix-run/react'
+import { IconBrandGithub, IconBrandGoogle } from '@tabler/icons-react'
+import * as yup from 'yup'
+import { yupAction } from '~/utils/yup-action.util'
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const users = await prisma.user.findMany()
+	return null
+}
 
-	const now = new Date()
+const authSchema = yup.object({
+	provider: yup.string().oneOf(['google', 'github'], 'Invalid provider').required(),
+})
 
-	return { users, now }
+export async function action({ request }: ActionFunctionArgs) {
+	throw new Error('Something wrong')
+	try {
+		const data = await yupAction(request, authSchema)
+
+		console.log('logdev', data)
+
+		return json(data)
+	} catch (error) {
+		return json(error, { status: 400 })
+	}
 }
 
 export const meta: MetaFunction = () => {
@@ -18,13 +33,38 @@ export const meta: MetaFunction = () => {
 }
 
 export default function AuthRoute() {
-	const data = useLoaderData<typeof loader>()
-
-	console.log('logdev', typeof data.now) // should return object / date class
+	const actionData = useActionData()
+	console.log('logdev', actionData)
 
 	return (
-		<div>
-			<p>Auth page</p>
+		<div className="h-full flex items-center justify-center p-8 pt-36">
+			<Paper withBorder p="lg" radius="md" className="w-full max-w-[380px]">
+				<Title order={2} className="text-balance">Welcome to Remix workshop!</Title>
+				<p className="text-gray-6 font-medium">Login with</p>
+
+				<Form method="POST" className="mx-auto mt-6 flex flex-col gap-2">
+					<Button
+						variant="default"
+						radius="xl"
+						leftSection={<IconBrandGoogle />}
+						type="submit"
+						name="provider"
+						value="test"
+					>
+						Google
+					</Button>
+					<Button
+						variant="default"
+						radius="xl"
+						leftSection={<IconBrandGithub />}
+						type="submit"
+						name="provider"
+						value="github"
+					>
+						Github
+					</Button>
+				</Form>
+			</Paper>
 		</div>
 	)
 }

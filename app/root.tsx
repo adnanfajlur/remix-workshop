@@ -3,10 +3,10 @@
 import '@mantine/core/styles.css'
 import 'virtual:uno.css'
 
-import { ColorSchemeScript, MantineProvider } from '@mantine/core'
+import { ColorSchemeScript, MantineColorScheme, MantineProvider } from '@mantine/core'
 import type { LinksFunction } from '@remix-run/node'
-import { Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration } from '@remix-run/react'
-import { theme } from './configs/theme.config'
+import { isRouteErrorResponse, Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useRouteError } from '@remix-run/react'
+import { theme, themeVarResolver } from './libs/theme.lib'
 
 export const links: LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -20,6 +20,8 @@ export const meta: MetaFunction = () => {
 	]
 }
 
+const DEFAULT_COLOR_SCHEME: MantineColorScheme = 'light'
+
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
@@ -28,10 +30,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
-				<ColorSchemeScript />
+				<ColorSchemeScript defaultColorScheme={DEFAULT_COLOR_SCHEME} />
 			</head>
 			<body>
-				<MantineProvider theme={theme}>
+				<MantineProvider
+					defaultColorScheme={DEFAULT_COLOR_SCHEME}
+					theme={theme}
+					cssVariablesResolver={themeVarResolver}
+				>
 					{children}
 				</MantineProvider>
 				<ScrollRestoration />
@@ -43,4 +49,35 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
 	return <Outlet />
+}
+
+export function ErrorBoundary() {
+	const error = useRouteError()
+	console.log('logdev', error)
+
+	if (isRouteErrorResponse(error)) {
+		return (
+			<div>
+				<h1>
+					{error.status} {error.statusText}
+				</h1>
+				<p>{error.data}</p>
+			</div>
+		)
+	} else if (error instanceof Error) {
+		return (
+			<div>
+				<h1>Error</h1>
+				<p>{error.message}</p>
+				{error.stack && (
+					<>
+						<p>The stack trace is:</p>
+						<pre>{error.stack}</pre>
+					</>
+				)}
+			</div>
+		)
+	} else {
+		return <h1>Unknown Error</h1>
+	}
 }

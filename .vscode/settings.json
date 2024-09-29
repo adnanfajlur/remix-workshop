@@ -7,6 +7,13 @@
 		"*.module.css": "scss"
 	},
 
+	"cssVariables.lookupFiles": [
+		"**/*.css",
+		"**/*.scss",
+		"**/*.sass",
+		"node_modules/@mantine/core/styles.css"
+	],
+
 	"unocss.colorPreview": false,
 	"unocss.remToPxPreview": true,
 	"unocss.autocomplete.matchType": "fuzzy",
