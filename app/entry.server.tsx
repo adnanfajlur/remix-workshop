@@ -6,7 +6,7 @@
 
 import { PassThrough } from 'node:stream'
 
-import type { AppLoadContext, EntryContext } from '@remix-run/node'
+import type { ActionFunctionArgs, AppLoadContext, EntryContext, LoaderFunctionArgs } from '@remix-run/node'
 import { createReadableStreamFromReadable } from '@remix-run/node'
 import { RemixServer } from '@remix-run/react'
 import { isbot } from 'isbot'
@@ -135,6 +135,21 @@ function handleBrowserRequest(
 			},
 		)
 
+		// Automatically timeout the react renderer after 10 seconds
 		setTimeout(abort, ABORT_DELAY)
 	})
 }
+
+// export function handleError(
+// 	error: unknown,
+// 	{
+// 		request,
+// 		params,
+// 		context,
+// 	}: LoaderFunctionArgs | ActionFunctionArgs,
+// ) {
+// 	if (!request.signal.aborted) {
+// 		sendErrorToErrorReportingService(error)
+// 		console.error(formatErrorForJsonLogging(error))
+// 	}
+// }

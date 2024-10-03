@@ -31,6 +31,7 @@ export const githubArctic = new GitHub(
 declare module 'lucia' {
 	interface Register {
 		Lucia: typeof lucia
+		UserId: string
 		DatabaseUserAttributes: {
 			name: string
 			email: string

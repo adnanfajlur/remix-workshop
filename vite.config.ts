@@ -2,6 +2,13 @@ import { vitePlugin as remix } from '@remix-run/dev'
 import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
+declare module '@remix-run/server-runtime' {
+	// or cloudflare, deno, etc.
+	interface Future {
+		unstable_singleFetch: true
+	}
+}
+
 export default defineConfig({
 	plugins: [
 		remix({
@@ -15,6 +22,8 @@ export default defineConfig({
 			routes(defineRoutes) {
 				return defineRoutes((route) => {
 					route('/auth', 'routes/auth/auth.route.tsx')
+					route('/auth/github', 'routes/auth/github.route.tsx')
+					route('/server-error', 'routes/server-error/server-error.route.tsx')
 					route('/', 'routes/layout.route.tsx', () => {
 						route('', 'routes/chat/chat.route.tsx', { index: true })
 					})
@@ -23,5 +32,7 @@ export default defineConfig({
 		}),
 		tsconfigPaths(),
 	],
-	server: { port: 3000 },
+	server: {
+		port: 3000,
+	},
 })

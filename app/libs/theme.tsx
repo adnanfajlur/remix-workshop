@@ -4,6 +4,8 @@ export const theme = createTheme({
 	cursorType: 'pointer',
 	primaryColor: 'blue',
 	defaultRadius: 'sm',
+	fontFamily: '"Inter", sans-serif',
+	headings: { fontFamily: '"Greycliff CF", sans-serif' },
 })
 
 export const themeVarResolver: CSSVariablesResolver = (theme) => {

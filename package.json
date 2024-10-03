@@ -7,11 +7,14 @@
 		"dev": "remix vite:dev",
 		"build": "prisma generate && remix vite:build",
 		"start": "remix-serve ./build/server/index.js",
-		"preview": "PORT=3000 remix-serve ./build/server/index.js",
+		"preview": "npm run build && npm run start",
+		"dev:express": "node server.mjs",
+		"start:express": "NODE_ENV=production node server.mjs",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"typecheck": "tsc"
 	},
 	"dependencies": {
+		"@hono/node-server": "^1.13.1",
 		"@lucia-auth/adapter-prisma": "^4.0.1",
 		"@mantine/core": "^7.13.0",
 		"@mantine/dates": "^7.13.0",
@@ -30,6 +33,7 @@
 		"dayjs": "^1.11.13",
 		"isbot": "^5.1.17",
 		"lucia": "^3.2.0",
+		"radash": "^12.1.0",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
 		"tailwind-merge": "^2.5.2",

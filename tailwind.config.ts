@@ -25,6 +25,10 @@ export default {
 			lg: '75em', // 75em * 16px = 1200px
 			xl: '88em', // 88em * 16px = 1408px
 		},
+		fontFamily: {
+			body: ['var(--mantine-font-family)'],
+			heading: ['var(--mantine-font-family-headings)'],
+		},
 		colors: {
 			inherit: colors.inherit,
 			current: colors.current,

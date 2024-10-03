@@ -1,4 +1,5 @@
-import type { MetaFunction } from '@remix-run/node'
+import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
+import { getUserSession } from '~/handlers'
 
 export const meta: MetaFunction = () => {
 	return [
