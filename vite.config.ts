@@ -19,11 +19,13 @@ export default defineConfig({
 				unstable_optimizeDeps: true,
 				unstable_singleFetch: true,
 			},
+			ignoredRouteFiles: ['**/**'], // ignore the default route files (we will define routes in below manually)
 			routes(defineRoutes) {
 				return defineRoutes((route) => {
 					route('/auth', 'routes/auth/auth.route.tsx')
 					route('/auth/github', 'routes/auth/github.route.tsx')
 					route('/server-error', 'routes/server-error/server-error.route.tsx')
+					route('/temp', 'routes/temp.route.tsx')
 					route('/', 'routes/layout.route.tsx', () => {
 						route('', 'routes/chat/chat.route.tsx', { index: true })
 					})

@@ -3,8 +3,8 @@
 	"typescript.tsdk": "node_modules/typescript/lib",
 
 	"files.associations": {
-		".env.*": "dotenv",
-		"*.module.css": "scss"
+		".env.*": "dotenv"
+		// "*.module.css": "scss"
 	},
 
 	"cssVariables.lookupFiles": [

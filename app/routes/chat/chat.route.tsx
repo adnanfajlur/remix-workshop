@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => {
 export default function ChatRoute() {
 	return (
 		<div>
-			<p>Chat page</p>
+			<p className="text-white">Chat page</p>
 		</div>
 	)
 }

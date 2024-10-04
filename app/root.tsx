@@ -5,17 +5,15 @@ import '@mantine/core/styles.css'
 import './root.css'
 import './fonts.css'
 
-import { Button, ColorSchemeScript, Container, Group, MantineColorScheme, MantineProvider, Text, Title } from '@mantine/core'
+import { Button, ColorSchemeScript, Container, Group, MantineProvider, Text, Title } from '@mantine/core'
 import type { LinksFunction } from '@remix-run/node'
 import { isRouteErrorResponse, Link, Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useRevalidator, useRouteError } from '@remix-run/react'
 import { theme, themeVarResolver } from './libs/theme'
-import { HttpError } from './utils/http-error'
 
 export const links: LinksFunction = () => [
 	{ rel: 'preconnect', href: 'https://fonts.googleapis.com' },
 	{ rel: 'preconnect', href: 'https://fonts.gstatic.com', crossOrigin: 'anonymous' },
 	{ rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap' },
-	// { rel: 'stylesheet', href: fonts },
 ]
 
 export const meta: MetaFunction = () => {
@@ -23,8 +21,6 @@ export const meta: MetaFunction = () => {
 		{ name: 'description', content: 'Welcome to Remix workshop!' },
 	]
 }
-
-const DEFAULT_COLOR_SCHEME: MantineColorScheme = 'dark'
 
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
@@ -34,11 +30,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
-				<ColorSchemeScript defaultColorScheme={DEFAULT_COLOR_SCHEME} />
+				<ColorSchemeScript forceColorScheme="dark" />
 			</head>
 			<body>
 				<MantineProvider
-					defaultColorScheme={DEFAULT_COLOR_SCHEME}
+					forceColorScheme="dark"
 					theme={theme}
 					cssVariablesResolver={themeVarResolver}
 				>
@@ -71,7 +67,7 @@ export function ErrorBoundary() {
 		let description = error.data
 
 		if (code === 404) {
-			message = 'You have found a secret place.'
+			message = 'You have found a secret place'
 			description = 'Unfortunately, this is only a 404 page. You may have mistyped the address, or the page has been moved to another URL.'
 		}
 
@@ -84,7 +80,7 @@ export function ErrorBoundary() {
 						{description}
 					</Text>
 					<Group justify="center">
-						<Button variant="subtle" size="md" component={Link} to="/">
+						<Button variant="default" size="md" component={Link} to="/">
 							Take me back to home page
 						</Button>
 					</Group>
