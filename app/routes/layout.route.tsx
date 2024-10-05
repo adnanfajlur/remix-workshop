@@ -1,8 +1,8 @@
-import { ActionIcon, AppShell, Box, Burger, Button, Group, Menu, ScrollArea, Skeleton, Text, Title, Tooltip } from '@mantine/core'
+import { ActionIcon, AppShell, Avatar, Box, Burger, Button, Group, Menu, ScrollArea, Skeleton, Text, Title, Tooltip } from '@mantine/core'
 import { useDisclosure, useSetState } from '@mantine/hooks'
-import { LoaderFunctionArgs } from '@remix-run/node'
-import { Outlet, useLoaderData } from '@remix-run/react'
-import { IconChevronRight, IconDots, IconEdit, IconLayoutSidebar, IconMenu, IconMenu2, IconX } from '@tabler/icons-react'
+import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node'
+import { Link, Outlet, useLoaderData } from '@remix-run/react'
+import { IconChevronRight, IconDots, IconEdit, IconLayoutSidebar, IconLogout, IconMenu, IconMenu2, IconX } from '@tabler/icons-react'
 import { getUserSession } from '~/handlers'
 import { cn } from '~/utils/cn'
 import { ChatMenu } from './chat-menu'
@@ -106,8 +106,20 @@ export default function LayoutRoute() {
 					<ActionIcon color="dark.7" size="lg" c="dark.0" hiddenFrom="sm">
 						<IconEdit />
 					</ActionIcon>
+
+					<Menu position="bottom-end" width={160}>
+						<Menu.Target>
+							<Avatar name={user.name} size="42px" visibleFrom="sm" className="ml-auto cursor-pointer" />
+						</Menu.Target>
+						<Menu.Dropdown>
+							<Menu.Item leftSection={<IconLogout size={22} />} component={Link} to="/auth/log-out">
+								Log out
+							</Menu.Item>
+						</Menu.Dropdown>
+					</Menu>
 				</div>
 			</AppShell.Header>
+
 			<AppShell.Navbar p="md" pt="sm" bg="dark.8" withBorder={false}>
 				<div className="flex flex-col gap-1">
 					<Tooltip label="Close sidebar">
@@ -122,6 +134,7 @@ export default function LayoutRoute() {
 						New chat
 					</Button>
 				</div>
+
 				<ScrollArea
 					offsetScrollbars
 					className="mt-6 mr-[-12px]"
@@ -132,7 +145,22 @@ export default function LayoutRoute() {
 						{chats.map((chat) => <ChatMenu chatId={chat} title={chat} key={chat} />)}
 					</div>
 				</ScrollArea>
+
+				<Menu position="top-start" width="target">
+					<Menu.Target>
+						<Box hiddenFrom="sm" className="flex cursor-pointer gap-4 items-center px-[11px] py-2 mt-2 mb-[-8px] hover:bg-dark-5 rounded-lg">
+							<Avatar name={user.name} size="36px" hiddenFrom="sm" />
+							<Text>{user.name}</Text>
+						</Box>
+					</Menu.Target>
+					<Menu.Dropdown>
+						<Menu.Item leftSection={<IconLogout size={22} />} component={Link} to="/auth/log-out">
+							Log out
+						</Menu.Item>
+					</Menu.Dropdown>
+				</Menu>
 			</AppShell.Navbar>
+
 			<AppShell.Main>
 				<Outlet />
 			</AppShell.Main>
