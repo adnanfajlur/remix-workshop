@@ -1,7 +1,7 @@
 import { LoaderFunctionArgs } from '@remix-run/node'
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	throw new Error('This is a test error')
+	throw new Error('Something went wrong')
 }
 
 export default function ServerErrorRoute() {

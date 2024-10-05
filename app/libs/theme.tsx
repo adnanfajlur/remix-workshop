@@ -10,7 +10,7 @@ export const theme = createTheme({
 	headings: { fontFamily: '"Greycliff CF", sans-serif' },
 	components: {
 		Tooltip: Tooltip.extend({
-			defaultProps: { withArrow: true },
+			defaultProps: { withArrow: true, openDelay: 200 },
 			classNames: { tooltip: 'text-[13px]' },
 		}),
 		Button: Button.extend({

@@ -1,9 +1,10 @@
-import { ActionIcon, AppShell, Burger, Button, Group, Menu, ScrollArea, Skeleton, Text, Title, Tooltip } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { ActionIcon, AppShell, Box, Burger, Button, Group, Menu, ScrollArea, Skeleton, Text, Title, Tooltip } from '@mantine/core'
+import { useDisclosure, useSetState } from '@mantine/hooks'
 import { LoaderFunctionArgs } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
-import { IconChevronRight, IconDots, IconEdit, IconLayoutSidebar } from '@tabler/icons-react'
+import { IconChevronRight, IconDots, IconEdit, IconLayoutSidebar, IconMenu, IconMenu2, IconX } from '@tabler/icons-react'
 import { getUserSession } from '~/handlers'
+import { cn } from '~/utils/cn'
 import { ChatMenu } from './chat-menu'
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
@@ -73,41 +74,51 @@ const chats = [
 export default function LayoutRoute() {
 	const { user } = useLoaderData<typeof loader>()
 
-	const [opened, { toggle }] = useDisclosure()
+	const [mobileOpened, { toggle: toggleMobile }] = useDisclosure()
+	const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true)
 
 	return (
 		<AppShell
 			layout="alt"
 			header={{ height: 60 }}
-			navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
-			padding="md"
+			navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !mobileOpened, desktop: !desktopOpened } }}
+			padding="lg"
 		>
 			<AppShell.Header withBorder={false}>
-				<Group h="100%" px="md">
-					<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-					<Title order={2}>Chat</Title>
-				</Group>
+				<div className="flex h-full items-center px-[20px] justify-between sm:justify-normal gap-4">
+					<Box visibleFrom="sm" className={cn('flex items-center', { hidden: desktopOpened })}>
+						<Tooltip label="Open sidebar">
+							<ActionIcon color="dark.7" size="40px" onClick={toggleDesktop}>
+								<IconLayoutSidebar size={22} />
+							</ActionIcon>
+						</Tooltip>
+						<Tooltip label="New chat">
+							<ActionIcon color="dark.7" size="40px">
+								<IconEdit size={22} />
+							</ActionIcon>
+						</Tooltip>
+					</Box>
+
+					<ActionIcon color="dark.7" c="dark.0" size="lg" hiddenFrom="sm" onClick={toggleMobile}>
+						<IconMenu2 />
+					</ActionIcon>
+					<Title order={2} h={32} className="text-dark-0 sm:text-white">Chat</Title>
+					<ActionIcon color="dark.7" size="lg" c="dark.0" hiddenFrom="sm">
+						<IconEdit />
+					</ActionIcon>
+				</div>
 			</AppShell.Header>
-			<AppShell.Navbar p="md" bg="dark.8" withBorder={false}>
-				{
-					/* <Group>
-					<Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-				</Group> */
-				}
+			<AppShell.Navbar p="md" pt="sm" bg="dark.8" withBorder={false}>
 				<div className="flex flex-col gap-1">
 					<Tooltip label="Close sidebar">
-						<ActionIcon color="dark.8" size="xl" p="4px">
-							<IconLayoutSidebar />
+						<ActionIcon color="dark.8" size="40px" visibleFrom="sm" onClick={toggleDesktop}>
+							<IconLayoutSidebar size={22} />
 						</ActionIcon>
 					</Tooltip>
-					<Button
-						fullWidth
-						justify="flex-start"
-						px="xs"
-						size="md"
-						color="dark.8"
-						leftSection={<IconEdit size={22} />}
-					>
+					<ActionIcon color="dark.8" size="40px" hiddenFrom="sm" onClick={toggleMobile}>
+						<IconX />
+					</ActionIcon>
+					<Button fullWidth justify="flex-start" px="xs" size="md" color="dark.8" leftSection={<IconEdit size={22} />}>
 						New chat
 					</Button>
 				</div>
@@ -122,7 +133,7 @@ export default function LayoutRoute() {
 					</div>
 				</ScrollArea>
 			</AppShell.Navbar>
-			<AppShell.Main p="md">
+			<AppShell.Main>
 				<Outlet />
 			</AppShell.Main>
 		</AppShell>

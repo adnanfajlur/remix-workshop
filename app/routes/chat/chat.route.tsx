@@ -1,5 +1,6 @@
-import type { LoaderFunctionArgs, MetaFunction } from '@remix-run/node'
-import { getUserSession } from '~/handlers'
+import { ActionIcon, Button, Menu } from '@mantine/core'
+import type { MetaFunction } from '@remix-run/node'
+import { IconArrowBack, IconDots } from '@tabler/icons-react'
 
 export const meta: MetaFunction = () => {
 	return [
