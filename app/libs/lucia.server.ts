@@ -28,7 +28,6 @@ export const githubArctic = new GitHub(
 	serverEnv.GITHUB_CLIENT_SECRET,
 )
 
-console.log('logdev', appEnv.BASE_URL)
 export const googleArctic = new Google(
 	serverEnv.GOOGLE_CLIENT_ID,
 	serverEnv.GOOGLE_CLIENT_SECRET,
