@@ -24,6 +24,7 @@ export default defineConfig({
 				return defineRoutes((route) => {
 					route('/auth', 'routes/auth/auth.route.tsx')
 					route('/auth/github', 'routes/auth/github.route.tsx')
+					route('/auth/google', 'routes/auth/google.route.tsx')
 					route('/auth/log-out', 'routes/auth/log-out.route.tsx')
 
 					route('/server-error', 'routes/server-error/server-error.route.tsx')

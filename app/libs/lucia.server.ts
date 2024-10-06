@@ -1,6 +1,7 @@
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma'
-import { GitHub } from 'arctic'
+import { GitHub, Google } from 'arctic'
 import { Lucia } from 'lucia'
+import { appEnv } from '~/configs/app-env'
 import { serverEnv } from '~/configs/server-env.server'
 import { prisma } from './prisma.server'
 
@@ -25,6 +26,12 @@ export const lucia = new Lucia(adapter, {
 export const githubArctic = new GitHub(
 	serverEnv.GITHUB_CLIENT_ID,
 	serverEnv.GITHUB_CLIENT_SECRET,
+)
+
+export const googleArctic = new Google(
+	serverEnv.GOOGLE_CLIENT_ID,
+	serverEnv.GOOGLE_CLIENT_SECRET,
+	appEnv.BASE_URL + '/auth/google',
 )
 
 // IMPORTANT!

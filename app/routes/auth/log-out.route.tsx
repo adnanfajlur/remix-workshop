@@ -3,7 +3,7 @@ import { getUserSession } from '~/handlers'
 import { lucia } from '~/libs/lucia.server'
 
 export async function loader({ request }: LoaderFunctionArgs) {
-	const { user, session } = await getUserSession(request)
+	const { session } = await getUserSession(request)
 
 	await lucia.invalidateSession(session.id)
 
