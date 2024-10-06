@@ -1,13 +1,15 @@
 import { PrismaClient } from '@prisma/client'
 
-declare global {
-	var __prisma: PrismaClient
+function singleton<Value>(name: string, value: () => Value): Value {
+	const globalStore = global as any
+
+	globalStore.__singletons ??= {}
+	globalStore.__singletons[name] ??= value()
+
+	return globalStore.__singletons[name]
 }
 
-if (!global.__prisma) {
-	global.__prisma = new PrismaClient()
-}
+const prisma = singleton('prisma', () => new PrismaClient())
+prisma.$connect()
 
-global.__prisma.$connect()
-
-export const prisma = global.__prisma
+export { prisma }
