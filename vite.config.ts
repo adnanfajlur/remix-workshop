@@ -16,10 +16,10 @@ export default defineConfig({
 				v3_fetcherPersist: true,
 				v3_relativeSplatPath: true,
 				v3_throwAbortReason: true,
-				unstable_optimizeDeps: true,
 				unstable_singleFetch: true,
+				unstable_optimizeDeps: true,
 			},
-			ignoredRouteFiles: ['**/**'], // ignore the default route files (we will define routes in below manually)
+			ignoredRouteFiles: ['**/**'], // ignore the default route files (we will define routes in defineRoutes() manually)
 			routes(defineRoutes) {
 				return defineRoutes((route) => {
 					route('/auth', 'routes/auth/auth.route.tsx')
@@ -28,10 +28,9 @@ export default defineConfig({
 					route('/auth/log-out', 'routes/auth/log-out.route.tsx')
 
 					route('/server-error', 'routes/server-error/server-error.route.tsx')
-					route('/temp', 'routes/temp.route.tsx')
 
 					route('/', 'routes/layout.route.tsx', () => {
-						route('', 'routes/chat/chat.route.tsx', { index: true })
+						route('', 'routes/conversation/conversation.route.tsx', { index: true })
 					})
 				})
 			},

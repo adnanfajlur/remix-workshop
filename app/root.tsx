@@ -22,6 +22,8 @@ export const meta: MetaFunction = () => {
 	]
 }
 
+const DEFAULT_COLOR_SCHEME = 'dark'
+
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
@@ -30,11 +32,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<Meta />
 				<Links />
-				<ColorSchemeScript forceColorScheme="dark" />
+				<ColorSchemeScript forceColorScheme={DEFAULT_COLOR_SCHEME} />
 			</head>
 			<body>
 				<MantineProvider
-					forceColorScheme="dark"
+					forceColorScheme={DEFAULT_COLOR_SCHEME}
 					theme={theme}
 					cssVariablesResolver={themeVarResolver}
 				>

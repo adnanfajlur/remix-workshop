@@ -1,14 +1,14 @@
-import { Menu, Tooltip } from '@mantine/core'
+import { Menu } from '@mantine/core'
 import { useSetState } from '@mantine/hooks'
 import { IconDots, IconEdit, IconPencil, IconShare, IconTrash, IconUpload } from '@tabler/icons-react'
 import { cn } from '~/utils/cn'
 
-type ChatMenuProps = Omit<React.ComponentProps<'div'>, 'children'> & {
+type ConversationMenuProps = Omit<React.ComponentProps<'div'>, 'children'> & {
 	chatId: string
 	title: string
 }
 
-export function ChatMenu({ chatId, title, className, ...props }: ChatMenuProps) {
+export function ConversationMenu({ chatId, title, className, ...props }: ConversationMenuProps) {
 	const [state, setState] = useSetState({
 		isMenuOpened: false,
 	})
@@ -42,7 +42,7 @@ export function ChatMenu({ chatId, title, className, ...props }: ChatMenuProps) 
 				<Menu.Target>
 					<div className={cn('absolute bottom-0 top-0 right-0 items-center gap-1.5 pr-2 hidden group-hover:flex', { flex: state.isMenuOpened })}>
 						<div className="flex items-center justify-center transition">
-							<IconDots size={20} strokeWidth={1.4} />
+							<IconDots size={20} stroke={1.4} />
 						</div>
 					</div>
 				</Menu.Target>

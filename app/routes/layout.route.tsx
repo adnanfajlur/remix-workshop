@@ -5,7 +5,7 @@ import { Link, Outlet, useLoaderData } from '@remix-run/react'
 import { IconChevronRight, IconDots, IconEdit, IconLayoutSidebar, IconLogout, IconMenu, IconMenu2, IconX } from '@tabler/icons-react'
 import { getUserSession } from '~/handlers'
 import { cn } from '~/utils/cn'
-import { ChatMenu } from './chat-menu'
+import { ConversationMenu } from './conversation-menu'
 
 export async function loader({ request, context }: LoaderFunctionArgs) {
 	const { user } = await getUserSession(request)
@@ -55,20 +55,20 @@ const chats = [
 	'Exploring Different Art Forms',
 	'The Benefits of Practicing Gratitude',
 	'How to Choose the Right Pet for Your Family',
-	'The Impact of Social Media on Society',
-	'A Guide to Effective Time Management',
-	'Understanding Nutrition Labels',
-	'How to Plan a Successful Event',
-	'Exploring Local History: What You Need to Know',
-	'The Benefits of Learning a New Language',
-	'How to Stay Motivated During a Workout',
-	'Tips for Building Strong Relationships',
-	'The Importance of Clean Water Access',
-	'How to Improve Your Public Speaking Skills',
-	"A Beginner's Guide to Meditation",
-	'The Role of Music in Mental Health',
-	'How to Make Eco-friendly Choices',
-	'The Benefits of Teamwork in the Workplace',
+	// 'The Impact of Social Media on Society',
+	// 'A Guide to Effective Time Management',
+	// 'Understanding Nutrition Labels',
+	// 'How to Plan a Successful Event',
+	// 'Exploring Local History: What You Need to Know',
+	// 'The Benefits of Learning a New Language',
+	// 'How to Stay Motivated During a Workout',
+	// 'Tips for Building Strong Relationships',
+	// 'The Importance of Clean Water Access',
+	// 'How to Improve Your Public Speaking Skills',
+	// "A Beginner's Guide to Meditation",
+	// 'The Role of Music in Mental Health',
+	// 'How to Make Eco-friendly Choices',
+	// 'The Benefits of Teamwork in the Workplace',
 ]
 
 export default function LayoutRoute() {
@@ -142,7 +142,7 @@ export default function LayoutRoute() {
 					classNames={{ viewport: '[&>div]:!block' }}
 				>
 					<div className="flex flex-col">
-						{chats.map((chat) => <ChatMenu chatId={chat} title={chat} key={chat} />)}
+						{chats.map((chat) => <ConversationMenu chatId={chat} title={chat} key={chat} />)}
 					</div>
 				</ScrollArea>
 
