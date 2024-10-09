@@ -9,7 +9,20 @@ function singleton<Value>(name: string, value: () => Value): Value {
 	return globalStore.__singletons[name]
 }
 
-const prisma = singleton('prisma', () => new PrismaClient())
+const prisma = singleton('prisma', () => {
+	return new PrismaClient({
+		omit: {
+			conversation: {
+				deletedAt: true,
+				userId: true,
+			},
+			message: {
+				conversationId: true,
+			},
+		},
+	})
+})
+
 prisma.$connect()
 
 export { prisma }

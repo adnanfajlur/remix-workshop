@@ -1,6 +1,8 @@
 export const serverEnv = {
 	DATABASE_URL: process.env.DATABASE_URL!,
 
+	OPENAI_API_KEY: process.env.OPENAI_API_KEY!,
+
 	GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID!,
 	GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET!,
 
