@@ -29,7 +29,7 @@ export const theme = createTheme({
 			if (parsed.shade !== undefined) {
 				return {
 					...defaultResolvedColors,
-					hover: `var(--mantine-color-${parsed.color}-${parsed.shade - 3})`,
+					hover: `var(--mantine-color-${parsed.color}-${parsed.shade - 2})`,
 				}
 			}
 		}

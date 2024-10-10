@@ -19,6 +19,10 @@ const prisma = singleton('prisma', () => {
 			message: {
 				conversationId: true,
 			},
+			todo: {
+				deletedAt: true,
+				userId: true,
+			},
 		},
 	})
 })

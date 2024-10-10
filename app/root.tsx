@@ -1,11 +1,13 @@
 // Import styles of packages that you've installed.
 // All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css'
+import '@mantine/notifications/styles.css'
 
 import './root.css'
 import './fonts.css'
 
 import { Button, ColorSchemeScript, Container, Group, MantineProvider, Text, Title } from '@mantine/core'
+import { Notifications } from '@mantine/notifications'
 import type { LinksFunction } from '@remix-run/node'
 import { isRouteErrorResponse, Link, Links, Meta, MetaFunction, Outlet, Scripts, ScrollRestoration, useRevalidator, useRouteError } from '@remix-run/react'
 import { theme, themeVarResolver } from './libs/theme'
@@ -40,6 +42,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 					theme={theme}
 					cssVariablesResolver={themeVarResolver}
 				>
+					<Notifications position="top-right" />
 					{children}
 				</MantineProvider>
 				<ScrollRestoration />

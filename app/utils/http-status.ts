@@ -1,3 +1,5 @@
+// code from https://github.com/honojs/hono/blob/main/packages/status/src/index.ts
+
 /**
  * @module
  * HTTP Status utility.
