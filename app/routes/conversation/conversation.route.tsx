@@ -1,18 +1,16 @@
-import { ActionIcon, Card, Container, convertCssVariables, convertHsvaTo, Loader, Paper, ScrollArea, Text, Textarea } from '@mantine/core'
+import { ActionIcon, Card, Container, Loader, ScrollArea, Text, Textarea } from '@mantine/core'
 import { useMounted, useSetState } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import { Conversation, Message } from '@prisma/client'
-import { ActionFunctionArgs, json, LoaderFunctionArgs, type MetaFunction, redirect } from '@remix-run/node'
+import { ActionFunctionArgs, json, LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react'
 import { IconArrowUp, IconBrandReact } from '@tabler/icons-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import * as yup from 'yup'
 import { getUserSession } from '~/handlers'
-import { openai } from '~/libs/openai.server'
 import { prisma } from '~/libs/prisma.server'
-import { yupAction } from '~/utils/yup-action'
+import { ConversationWithMessagesType, MessageType } from '~/types'
 import classes from './conversation.route.module.css'
 
 const CONVERSATION_SUGGESTIONS = [
@@ -21,16 +19,6 @@ const CONVERSATION_SUGGESTIONS = [
 	'Write a report based on my data',
 	'Summarize a long document',
 ]
-
-const createConversationSchema = yup.object({
-	content: yup.string().required(),
-}).noUnknown()
-
-type MessageType = Pick<Message, 'id' | 'content' | 'sender' | 'createdAt'>
-
-type ConversationType = Conversation & {
-	messages: MessageType[]
-}
 
 export const meta: MetaFunction = () => {
 	return [
@@ -41,13 +29,11 @@ export const meta: MetaFunction = () => {
 export async function loader({ request, params }: LoaderFunctionArgs) {
 	const { user } = await getUserSession(request)
 
-	let conversation: ConversationType & {
-		isFresh?: boolean
-	} | null = null
+	let conversation: ConversationWithMessagesType | null = null
 
 	if (params['conversation-id']) {
 		conversation = await prisma.conversation.findFirst({
-			where: { id: params['conversation-id'], userId: user.id },
+			where: { id: params['conversation-id'], userId: user.id, deletedAt: null },
 			include: {
 				messages: {
 					orderBy: {
@@ -56,13 +42,45 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 				},
 			},
 		})
-
-		if (conversation) {
-			conversation.isFresh = conversation.messages.length === 1
-		}
 	}
 
 	return { conversation }
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+	const { user } = await getUserSession(request)
+
+	const conversationId = params['conversation-id']
+
+	if (conversationId) {
+		const formData = await request.formData()
+		const intent = formData.get('intent') as 'update' | 'delete'
+
+		if (intent === 'update') {
+			const title = formData.get('title') as string
+			if (!title) {
+				return json({ message: 'Title is required' }, { status: 400 })
+			}
+
+			await prisma.conversation.update({
+				where: { id: conversationId, userId: user.id, deletedAt: null },
+				data: { title },
+			})
+
+			return json({ success: true })
+		}
+
+		if (intent === 'delete') {
+			await prisma.conversation.update({
+				where: { id: conversationId, userId: user.id, deletedAt: null },
+				data: { deletedAt: new Date() },
+			})
+
+			return json({ success: true })
+		}
+	}
+
+	return json({ message: 'Action not found' }, { status: 400 })
 }
 
 export default function ChatRoute() {
@@ -185,7 +203,7 @@ export default function ChatRoute() {
 				? (
 					<Container size="sm" className="w-full grow flex flex-col items-center justify-center">
 						<IconBrandReact size={52} stroke={1.4} />
-						<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
+						<div className="grid grid-cols-2 gap-4 mt-10">
 							{CONVERSATION_SUGGESTIONS.map((suggestion) => (
 								<Card
 									withBorder

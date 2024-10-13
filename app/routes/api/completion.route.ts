@@ -33,7 +33,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		})
 	} else {
 		conversation = await prisma.conversation.findFirst({
-			where: { id: conversationId, userId: user.id },
+			where: { id: conversationId, userId: user.id, deletedAt: null },
 			include: conversationInclude,
 		})
 	}
@@ -60,7 +60,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
 				enqueue('user-msg', { message: userMessage })
 
 				const messages: { role: string; content: string }[] = [
-					{ role: 'system', content: 'You are a helpful assistant. Always respond using Markdown formatting like chatgpt does. Use language from the conversation or source' },
+					{
+						role: 'system',
+						content: `You are a helpful assistant. Always respond using Markdown formatting like chatgpt does. Use language from the conversation or source. Current date: ${
+							new Date().toLocaleDateString()
+						}`,
+					},
 					...conversation.messages.map((msg) => ({ role: msg.sender, content: msg.content })),
 					{ role: 'user', content },
 				]
@@ -100,12 +105,12 @@ export async function action({ request, params }: ActionFunctionArgs) {
 							const title = generatedTitle.choices[0]?.message.content?.trim() || content
 
 							await prisma.conversation.update({
-								where: { id: conversation.id, userId: user.id },
+								where: { id: conversation.id, userId: user.id, deletedAt: null },
 								data: { title, updatedAt: new Date() },
 							})
 						} else {
 							await prisma.conversation.update({
-								where: { id: conversation.id, userId: user.id },
+								where: { id: conversation.id, userId: user.id, deletedAt: null },
 								data: { updatedAt: new Date() },
 							})
 						}
