@@ -34,7 +34,7 @@ export default defineConfig({
 					route('/', 'routes/todo/todo.route.tsx', { index: true })
 
 					route('/c', 'routes/layout.route.tsx', () => {
-						route(':id?', 'routes/conversation/conversation.route.tsx', { index: true })
+						route(':conversation-id?', 'routes/conversation/conversation.route.tsx', { index: true })
 					})
 				})
 			},

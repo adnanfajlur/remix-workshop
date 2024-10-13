@@ -1,3 +1,4 @@
 - https://andrelandgraf.dev/blog/2023-01-07_why_you_shouldnt_use_useactiondata
 - https://remix.run/docs/en/main/discussion/form-vs-fetcher
 - https://reactrouter.com/dev/guides
+- https://sergiodxa.com/tutorials/use-server-sent-events-with-remix

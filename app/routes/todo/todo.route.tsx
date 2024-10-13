@@ -223,7 +223,7 @@ export default function TodoRoute() {
 											fetcher.submit({ intent: 'delete', id: todo.id }, { method: 'DELETE' })
 										}}
 									>
-										<IconTrash stroke={1.5} size={22} />
+										<IconTrash stroke={1.4} size={22} />
 									</ActionIcon>
 								</Tooltip>
 							</div>
