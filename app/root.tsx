@@ -4,6 +4,7 @@ import '@mantine/core/styles.css'
 import '@mantine/notifications/styles.css'
 
 import './root.css'
+import './markdown.css'
 import './fonts.css'
 
 import { Button, ColorSchemeScript, Container, Group, MantineProvider, Text, Title } from '@mantine/core'

@@ -1,0 +1,139 @@
+.markdown {
+  max-width: unset;
+}
+
+.markdown pre {
+  margin-top: 0.5rem;
+}
+
+.markdown h1 {
+  font-weight: 700;
+  letter-spacing: -.04rem;
+}
+
+.markdown h1:first-child {
+  margin-top: 0;
+}
+
+.markdown h2 {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+.markdown h2:first-child {
+  margin-top: 0;
+}
+
+.markdown h3 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.markdown h3:first-child {
+  margin-top: 0;
+}
+
+.markdown h4 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.markdown h4:first-child {
+  margin-top: 0;
+}
+
+.markdown h5 {
+  font-weight: 600;
+}
+
+.markdown h5:first-child {
+  margin-top: 0;
+}
+
+.markdown blockquote {
+  --tw-border-opacity: 1;
+  border-color: var(--mantine-color-dark-4);
+  line-height: 1.5rem;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
+[dir=ltr] .markdown blockquote {
+  border-left-width: 2px;
+  padding-left: 1rem;
+}
+
+[dir=rtl] .markdown blockquote {
+  border-right-width: 2px;
+  padding-right: 1rem;
+}
+
+.markdown blockquote>p {
+  margin: 0;
+}
+
+.markdown blockquote>p:after,.markdown blockquote>p:before {
+  display: none;
+}
+
+.markdown table {
+  --tw-border-spacing-x: 0px;
+  --tw-border-spacing-y: 0px;
+  border-collapse: separate;
+  border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+.markdown p {
+  margin-bottom: 0.5rem;
+}
+
+.markdown p+:where(ol,ul) {
+  margin-top: 0;
+}
+
+.markdown :where(ol,ul)>li>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown :where(ol,ul)>li>:first-child {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.markdown th {
+  background-color: var(--mantine-color-dark-6);
+  border-bottom-width: 1px;
+  border-color: var(--mantine-color-dark-4);
+  border-top-width: 1px;
+  padding: 0.25rem 0.75rem;
+}
+
+
+.markdown a {
+  color: var(--mantine-color-blue-6);
+  font-weight: 400;
+  text-decoration-line: none;
+}
+
+.markdown .float-image+p {
+  margin-top: 0;
+}
+
+.markdown.headers-v2 h1 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.75rem;
+  margin-bottom: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.markdown.headers-v2 p:not(:first-child) {
+  margin-top: 0.5rem;
+}

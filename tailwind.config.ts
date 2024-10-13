@@ -3,6 +3,9 @@ import colors from 'tailwindcss/colors'
 
 export default {
 	content: ['./app/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}'],
+	plugins: [
+		require('@tailwindcss/typography'),
+	],
 	theme: {
 		extend: {
 			fontFamily: {
@@ -17,6 +20,29 @@ export default {
 					'"Noto Color Emoji"',
 				],
 			},
+			typography: (theme: any) => ({
+				DEFAULT: {
+					css: {
+						color: theme('colors.white'),
+						'--tw-prose-invert-body': theme('colors.white'),
+						'--tw-prose-invert-headings': theme('colors.white'),
+						'--tw-prose-invert-lead': theme('colors.white'),
+						'--tw-prose-invert-links': theme('colors.white'),
+						'--tw-prose-invert-bold': theme('colors.white'),
+						'--tw-prose-invert-counters': theme('colors.white'),
+						'--tw-prose-invert-bullets': theme('colors.white'),
+						'--tw-prose-invert-hr': theme('colors.white'),
+						'--tw-prose-invert-quotes': theme('colors.white'),
+						'--tw-prose-invert-quote-borders': theme('colors.white'),
+						'--tw-prose-invert-captions': theme('colors.white'),
+						'--tw-prose-invert-code': theme('colors.white'),
+						'--tw-prose-invert-pre-code': theme('colors.white'),
+						'--tw-prose-invert-pre-bg': 'rgb(0 0 0 / 50%)',
+						'--tw-prose-invert-th-borders': theme('colors.white'),
+						'--tw-prose-invert-td-borders': theme('colors.white'),
+					},
+				},
+			}),
 		},
 		screens: {
 			xs: '36em', // 36em * 16px = 576px
@@ -205,5 +231,4 @@ export default {
 			},
 		},
 	},
-	plugins: [],
 } satisfies Config

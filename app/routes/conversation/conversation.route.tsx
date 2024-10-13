@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import * as yup from 'yup'
+import CustomMarkdown from '~/components/custom-markdown'
 import { getUserSession } from '~/handlers'
 import { prisma } from '~/libs/prisma.server'
 import { ConversationWithMessagesType, MessageType } from '~/types'
@@ -220,25 +221,25 @@ export default function ChatRoute() {
 					</Container>
 				)
 				: (
-					<ScrollArea scrollbars="y">
+					<ScrollArea scrollbars="y" classNames={{ viewport: '[&>div]:!block' }}>
 						<div className="flex flex-col gap-7 grow pt-6 pb-10">
 							{state.messages.map((message) => {
 								if (message.sender === 'user') {
 									return (
 										<Container size="sm" className="w-full" key={message.id}>
-											<div className="bg-dark-6 w-fit max-w-[70%] rounded-3xl px-5 py-2.5 text-white whitespace-pre-wrap ml-auto">
+											<div className="bg-dark-6 w-fit max-w-[70%] rounded-3xl px-5 py-2.5 text-white ml-auto">
 												{message.content}
 											</div>
 										</Container>
 									)
 								} else {
 									return (
-										<Container size="sm" className="w-full flex gap-4 md:gap-5 lg:gap-6" key={message.id}>
+										<Container size="sm" className="w-full flex gap-3 md:gap-5 lg:gap-6" key={message.id}>
 											<div className="text-dark-0 rounded-full border border-dark-4 h-fit p-1.5">
-												<IconBrandReact size={24} stroke={1.4} />
+												<IconBrandReact size={20} stroke={1.4} />
 											</div>
-											<div className="grow text-white whitespace-pre-wrap pt-1.5">
-												<Markdown remarkPlugins={[remarkGfm]} className="markdown">{message.content}</Markdown>
+											<div className="grow text-white pt-1.5 overflow-y-scroll">
+												<CustomMarkdown children={message.content} />
 											</div>
 										</Container>
 									)
@@ -246,14 +247,14 @@ export default function ChatRoute() {
 							})}
 
 							{typeof state.completion === 'string' && (
-								<Container size="sm" className="w-full flex gap-4 md:gap-5 lg:gap-6">
+								<Container size="sm" className="w-full flex gap-3 md:gap-5 lg:gap-6">
 									<div className="text-dark-0 rounded-full border border-dark-4 h-fit p-1.5">
-										<IconBrandReact size={24} stroke={1.4} />
+										<IconBrandReact size={20} stroke={1.4} />
 									</div>
-									<div className="grow text-white whitespace-pre-wrap pt-1.5">
+									<div className="grow text-white pt-1.5">
 										{state.completion === ''
 											? <Loader type="dots" color="white" />
-											: <Markdown remarkPlugins={[remarkGfm]} className="markdown">{state.completion}</Markdown>}
+											: <CustomMarkdown children={state.completion} />}
 									</div>
 								</Container>
 							)}
