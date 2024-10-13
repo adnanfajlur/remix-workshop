@@ -2,10 +2,11 @@ import { ActionIcon, AppShell, Avatar, Box, Button, Menu, Modal, ScrollArea, Tex
 import { isNotEmpty, useForm } from '@mantine/form'
 import { useDisclosure, useSetState } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
+import { nprogress } from '@mantine/nprogress'
 import { LoaderFunctionArgs } from '@remix-run/node'
-import { Link, Outlet, useLoaderData, useNavigate, useParams, useRevalidator } from '@remix-run/react'
+import { Link, Outlet, useLoaderData, useNavigate, useNavigation, useParams, useRevalidator } from '@remix-run/react'
 import { IconEdit, IconLayoutSidebar, IconLogout, IconMenu2, IconX } from '@tabler/icons-react'
-import { select, set, sleep } from 'radash'
+import { useEffect } from 'react'
 import { getUserSession } from '~/handlers'
 import { prisma } from '~/libs/prisma.server'
 import { ConversationType } from '~/types'
@@ -120,6 +121,8 @@ export default function LayoutRoute() {
 			navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !state.mobileOpened, desktop: !state.desktopOpened } }}
 			padding="lg"
 		>
+			<WatchNavigationProgress />
+
 			<Modal
 				title="Update title"
 				opened={!!state.updateConversation}
@@ -257,4 +260,20 @@ export default function LayoutRoute() {
 			</AppShell.Main>
 		</AppShell>
 	)
+}
+
+function WatchNavigationProgress() {
+	const navigation = useNavigation()
+
+	useEffect(() => {
+		const skipNProgress = navigation.location?.state?.skipNProgress
+
+		if (navigation.state !== 'idle' && !skipNProgress) {
+			nprogress.start()
+		} else {
+			nprogress.complete()
+		}
+	}, [navigation.state])
+
+	return null
 }

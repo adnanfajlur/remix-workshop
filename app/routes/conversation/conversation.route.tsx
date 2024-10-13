@@ -4,7 +4,7 @@ import { notifications } from '@mantine/notifications'
 import { ActionFunctionArgs, json, LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react'
 import { IconArrowUp, IconBrandReact } from '@tabler/icons-react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import * as yup from 'yup'
@@ -85,11 +85,11 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function ChatRoute() {
+	const { conversation } = useLoaderData<typeof loader>()
 	const navigate = useNavigate()
-	const fetcher = useFetcher()
 	const revalidator = useRevalidator()
 
-	const { conversation } = useLoaderData<typeof loader>()
+	const viewport = useRef<HTMLDivElement>(null)
 
 	const [state, setState] = useSetState({
 		completion: null as string | null,
@@ -106,6 +106,12 @@ export default function ChatRoute() {
 		}))
 
 		fetchCompletion(content)
+	}
+
+	function scrollToBottom() {
+		if (viewport.current) {
+			viewport.current.scrollTo({ top: viewport.current.scrollHeight, behavior: 'smooth' })
+		}
 	}
 
 	async function fetchCompletion(content: string) {
@@ -148,7 +154,7 @@ export default function ChatRoute() {
 
 								if (event === 'new-conversation' && parsedData.conversation?.id) {
 									isNewConversation = true
-									navigate(`/c/${parsedData.conversation.id}`)
+									navigate(`/c/${parsedData.conversation.id}`, { state: { skipNProgress: true } })
 								}
 
 								if (event === 'user-msg' && parsedData.message?.id) {
@@ -221,7 +227,7 @@ export default function ChatRoute() {
 					</Container>
 				)
 				: (
-					<ScrollArea scrollbars="y" classNames={{ viewport: '[&>div]:!block' }}>
+					<ScrollArea scrollbars="y" classNames={{ viewport: '[&>div]:!block' }} viewportRef={viewport}>
 						<div className="flex flex-col gap-7 grow pt-6 pb-10">
 							{state.messages.map((message) => {
 								if (message.sender === 'user') {
