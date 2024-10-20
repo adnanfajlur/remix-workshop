@@ -152,8 +152,20 @@ export default function LayoutRoute() {
 				<Text>Are you sure you want to delete this conversation?</Text>
 
 				<div className="mt-6 flex justify-end gap-2">
-					<Button color="dark.7" disabled={state.isLoadingDelete} onClick={() => setState({ deleteConversation: null })}>Cancel</Button>
-					<Button color="red.8" loading={state.isLoadingDelete} onClick={handleDelete}>Delete</Button>
+					<Button
+						color="dark.7"
+						disabled={state.isLoadingDelete}
+						onClick={() => setState({ deleteConversation: null })}
+					>
+						Cancel
+					</Button>
+					<Button
+						color="red.8"
+						loading={state.isLoadingDelete}
+						onClick={handleDelete}
+					>
+						Delete
+					</Button>
 				</div>
 			</Modal>
 
@@ -161,7 +173,7 @@ export default function LayoutRoute() {
 				<div className="flex h-full items-center px-[20px] justify-between sm:justify-normal gap-4">
 					<Box visibleFrom="sm" className={cn('flex items-center', { hidden: state.desktopOpened })}>
 						<Tooltip label="Open sidebar">
-							<ActionIcon color="dark.7" size="40px" onClick={() => setState({ desktopOpened: false })}>
+							<ActionIcon color="dark.7" size="40px" onClick={() => setState({ desktopOpened: true })}>
 								<IconLayoutSidebar size={22} />
 							</ActionIcon>
 						</Tooltip>
@@ -196,7 +208,7 @@ export default function LayoutRoute() {
 			<AppShell.Navbar p="md" pt="sm" bg="dark.8" withBorder={false}>
 				<div className="flex flex-col gap-1">
 					<Tooltip label="Close sidebar">
-						<ActionIcon color="dark.8" size="40px" visibleFrom="sm" onClick={() => setState({ desktopOpened: true })}>
+						<ActionIcon color="dark.8" size="40px" visibleFrom="sm" onClick={() => setState({ desktopOpened: false })}>
 							<IconLayoutSidebar size={22} />
 						</ActionIcon>
 					</Tooltip>

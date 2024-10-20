@@ -2,3 +2,4 @@
 - https://remix.run/docs/en/main/discussion/form-vs-fetcher
 - https://reactrouter.com/dev/guides
 - https://sergiodxa.com/tutorials/use-server-sent-events-with-remix
+- https://github.com/perezcarreno/chatgpt-remix

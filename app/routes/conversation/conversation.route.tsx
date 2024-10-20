@@ -21,6 +21,8 @@ const CONVERSATION_SUGGESTIONS = [
 	'Summarize a long document',
 ]
 
+const CONTAINER_SIZE = 820
+
 export const meta: MetaFunction = () => {
 	return [
 		{ title: 'Chat - Remix workshop' },
@@ -208,7 +210,7 @@ export default function ChatRoute() {
 		>
 			{!state.messages.length
 				? (
-					<Container size="sm" className="w-full grow flex flex-col items-center justify-center">
+					<Container size={CONTAINER_SIZE} className="w-full grow flex flex-col items-center justify-center">
 						<IconBrandReact size={52} stroke={1.4} />
 						<div className="grid grid-cols-2 gap-4 mt-10">
 							{CONVERSATION_SUGGESTIONS.map((suggestion) => (
@@ -232,7 +234,7 @@ export default function ChatRoute() {
 							{state.messages.map((message) => {
 								if (message.sender === 'user') {
 									return (
-										<Container size="sm" className="w-full" key={message.id}>
+										<Container size={CONTAINER_SIZE} className="w-full" key={message.id}>
 											<div className="bg-dark-6 w-fit max-w-[70%] rounded-3xl px-5 py-2.5 text-white ml-auto">
 												{message.content}
 											</div>
@@ -240,7 +242,7 @@ export default function ChatRoute() {
 									)
 								} else {
 									return (
-										<Container size="sm" className="w-full flex gap-3 md:gap-5 lg:gap-6" key={message.id}>
+										<Container size={CONTAINER_SIZE} className="w-full flex gap-3 md:gap-5 lg:gap-6" key={message.id}>
 											<div className="text-dark-0 rounded-full border border-dark-4 h-fit p-1.5">
 												<IconBrandReact size={20} stroke={1.4} />
 											</div>
@@ -253,7 +255,7 @@ export default function ChatRoute() {
 							})}
 
 							{typeof state.completion === 'string' && (
-								<Container size="sm" className="w-full flex gap-3 md:gap-5 lg:gap-6">
+								<Container size={CONTAINER_SIZE} className="w-full flex gap-3 md:gap-5 lg:gap-6">
 									<div className="text-dark-0 rounded-full border border-dark-4 h-fit p-1.5">
 										<IconBrandReact size={20} stroke={1.4} />
 									</div>
@@ -268,7 +270,7 @@ export default function ChatRoute() {
 					</ScrollArea>
 				)}
 
-			<Container className="w-full mt-auto" size="sm">
+			<Container size={CONTAINER_SIZE} className="w-full mt-auto">
 				<ChatInput isLoading={state.isLoading} handleSubmit={handleSubmitMessage} />
 
 				<Text className="text-xs text-center" px="md" py="8px">

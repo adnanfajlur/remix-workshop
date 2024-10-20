@@ -46,7 +46,8 @@ export default {
 		},
 		screens: {
 			xs: '36em', // 36em * 16px = 576px
-			sm: '48em', // 48em * 16px = 768px
+			// sm: '48em', // 48em * 16px = 768px
+			sm: '52em', // 52em * 16px = 832px
 			md: '62em', // 62em * 16px = 992px
 			lg: '75em', // 75em * 16px = 1200px
 			xl: '88em', // 88em * 16px = 1408px

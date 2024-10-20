@@ -1,4 +1,4 @@
-import { Button, createTheme, CSSVariablesResolver, DEFAULT_THEME, defaultVariantColorsResolver, isLightColor, parseThemeColor, rgba, Tooltip } from '@mantine/core'
+import { Button, Container, createTheme, CSSVariablesResolver, DEFAULT_THEME, defaultVariantColorsResolver, isLightColor, parseThemeColor, rgba, Tooltip } from '@mantine/core'
 
 export const theme = createTheme({
 	cursorType: 'pointer',
@@ -8,6 +8,13 @@ export const theme = createTheme({
 	autoContrast: true,
 	fontFamily: '"Inter", sans-serif',
 	headings: { fontFamily: '"Greycliff CF", sans-serif' },
+	breakpoints: {
+		xs: '36em',
+		sm: '52em',
+		md: '62em',
+		lg: '75em',
+		xl: '88em',
+	},
 	components: {
 		Tooltip: Tooltip.extend({
 			defaultProps: { withArrow: true, openDelay: 200 },

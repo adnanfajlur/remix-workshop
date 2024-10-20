@@ -28,7 +28,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 	if (isNewConversation) {
 		conversation = await prisma.conversation.create({
-			data: { title: '', userId: user.id },
+			data: { title: 'New chat', userId: user.id },
 			include: conversationInclude,
 		})
 	} else {
@@ -41,6 +41,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 	if (!conversation) {
 		return json({ message: 'Conversation is not found' }, { status: 404 })
 	}
+
+	const abortController = new AbortController()
+	const { signal } = abortController
 
 	return new Response(new ReadableStream({
 		async start(controller) {
@@ -74,14 +77,34 @@ export async function action({ request, params }: ActionFunctionArgs) {
 					model: 'gpt-4o-mini',
 					messages: messages as ChatCompletionMessageParam[],
 					user: user.id,
-				})
+				}, { signal })
 
 				stream.on('content', (content) => {
+					if (signal.aborted) {
+						stream.controller.abort()
+						return
+					}
+
 					enqueue('msg', { content })
 				})
 
 				const chatCompletion = await stream.finalChatCompletion()
 				const fullResponse = chatCompletion.choices[0]?.message?.content || ''
+
+				let generatedTitle = ''
+
+				if (isNewConversation) {
+					const newTitle = await openai.chat.completions.create({
+						model: 'gpt-4o-mini',
+						messages: [
+							...messages as ChatCompletionMessageParam[],
+							{ role: 'assistant', content: fullResponse },
+							{ role: 'system', content: `Please give me a title for this conversation, like chatgpt does, without any symbol` },
+						],
+					})
+
+					generatedTitle = newTitle.choices[0]?.message.content?.trim() || conversation.title
+				}
 
 				const [assistantMessage] = await Promise.all([
 					prisma.message.create({
@@ -93,20 +116,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
 					}),
 					(async () => {
 						if (isNewConversation) {
-							const generatedTitle = await openai.chat.completions.create({
-								model: 'gpt-4o-mini',
-								messages: [
-									...messages as ChatCompletionMessageParam[],
-									{ role: 'assistant', content: fullResponse },
-									{ role: 'system', content: `Please give me a title for this conversation, like chatgpt does, without any symbol` },
-								],
-							})
-
-							const title = generatedTitle.choices[0]?.message.content?.trim() || content
-
 							await prisma.conversation.update({
 								where: { id: conversation.id, userId: user.id, deletedAt: null },
-								data: { title, updatedAt: new Date() },
+								data: { title: generatedTitle, updatedAt: new Date() },
 							})
 						} else {
 							await prisma.conversation.update({
@@ -119,14 +131,23 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
 				enqueue('assistant-msg', { message: assistantMessage })
 			} catch (error) {
-				logger.error({
-					code: 'ERROR_OPENAI_STREAM',
-					error,
-				})
-				enqueue('error', { message: 'An error occured' })
+				if (error.name === 'AbortError') {
+					enqueue('aborted', { message: 'Request was aborted' })
+				} else {
+					logger.error({
+						code: 'ERROR_OPENAI_STREAM',
+						error,
+					})
+					enqueue('error', { message: 'An error occured' })
+				}
 			} finally {
 				controller.close()
 			}
+		},
+
+		cancel() {
+			console.log('logdev cancel')
+			abortController.abort()
 		},
 	}), {
 		headers: {
