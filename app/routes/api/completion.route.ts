@@ -146,7 +146,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		},
 
 		cancel() {
-			console.log('logdev cancel')
 			abortController.abort()
 		},
 	}), {

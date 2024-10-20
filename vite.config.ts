@@ -27,11 +27,12 @@ export default defineConfig({
 					route('/auth/google', 'routes/auth/google.route.tsx')
 					route('/auth/log-out', 'routes/auth/log-out.route.tsx')
 
+					route('/todo', 'routes/todo/todo.route.tsx', { index: true })
+
 					route('/api/completion', 'routes/api/completion.route.ts')
+					route('/api/health', 'routes/api/health.route.ts')
 
 					route('/server-error', 'routes/server-error/server-error.route.tsx')
-
-					route('/todo', 'routes/todo/todo.route.tsx', { index: true })
 
 					route('/', 'routes/layout.route.tsx', () => {
 						route('c?/:conversation-id?', 'routes/conversation/conversation.route.tsx', { index: true })
