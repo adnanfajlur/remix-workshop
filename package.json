@@ -4,12 +4,16 @@
 	"sideEffects": false,
 	"type": "module",
 	"scripts": {
+		"setup": "dprint && prisma generate && prisma migrate deploy && prisma db seed",
 		"dev": "remix vite:dev",
 		"build": "prisma generate && remix vite:build",
 		"start": "remix-serve ./build/server/index.js",
 		"preview": "npm run build && npm run start",
 		"lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
 		"typecheck": "tsc",
+		"db:generate": "prisma generate",
+		"db:migrate": "prisma migrate dev",
+		"db:push": "prisma db push",
 		"test:ui": "playwright test --ui",
 		"test": "playwright test",
 		"show-report": "playwright show-report"
@@ -69,11 +73,15 @@
 		"postcss-simple-vars": "^7.0.1",
 		"prisma": "^5.20.0",
 		"tailwindcss": "^3.4.13",
+		"tsx": "^4.19.1",
 		"typescript": "^5.6.2",
 		"vite": "^5.4.8",
 		"vite-tsconfig-paths": "^5.0.1"
 	},
 	"engines": {
 		"node": ">=20.0.0"
+	},
+	"prisma": {
+		"seed": "tsx prisma/seed.ts"
 	}
 }
