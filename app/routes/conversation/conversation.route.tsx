@@ -1,7 +1,7 @@
 import { ActionIcon, Card, Container, Loader, ScrollArea, Text, Textarea } from '@mantine/core'
 import { useMounted, useSetState } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import { ActionFunctionArgs, json, LoaderFunctionArgs, type MetaFunction } from '@remix-run/node'
+import { ActionFunctionArgs, json, LoaderFunctionArgs, type MetaFunction, redirect } from '@remix-run/node'
 import { useFetcher, useLoaderData, useNavigate, useRevalidator } from '@remix-run/react'
 import { IconArrowUp, IconBrandReact } from '@tabler/icons-react'
 import { useEffect, useRef } from 'react'
@@ -45,6 +45,10 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 				},
 			},
 		})
+
+		if (!conversation) {
+			return redirect('/')
+		}
 	}
 
 	return { conversation }
@@ -127,9 +131,13 @@ export default function ChatRoute() {
 				formData.set('id', conversation.id)
 			}
 
+			const abortController = new AbortController()
+			const { signal } = abortController
+
 			const resp = await fetch(`/api/completion`, {
 				method: 'POST',
 				body: formData,
+				signal,
 			})
 
 			if (resp.body) {

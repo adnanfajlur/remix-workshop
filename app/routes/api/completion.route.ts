@@ -42,9 +42,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
 		return json({ message: 'Conversation is not found' }, { status: 404 })
 	}
 
-	const abortController = new AbortController()
-	const { signal } = abortController
-
 	return new Response(new ReadableStream({
 		async start(controller) {
 			function enqueue(event: string, data: any) {
@@ -77,24 +74,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
 					model: 'gpt-4o-mini',
 					messages: messages as ChatCompletionMessageParam[],
 					user: user.id,
-				}, { signal })
+				})
 
 				stream.on('content', (content) => {
-					if (signal.aborted) {
-						stream.controller.abort()
-						return
-					}
-
 					enqueue('msg', { content })
 				})
 
 				const chatCompletion = await stream.finalChatCompletion()
 				const fullResponse = chatCompletion.choices[0]?.message?.content || ''
 
-				let generatedTitle = ''
+				let newTitle = ''
 
 				if (isNewConversation) {
-					const newTitle = await openai.chat.completions.create({
+					const generatedTitle = await openai.chat.completions.create({
 						model: 'gpt-4o-mini',
 						messages: [
 							...messages as ChatCompletionMessageParam[],
@@ -103,7 +95,13 @@ export async function action({ request, params }: ActionFunctionArgs) {
 						],
 					})
 
-					generatedTitle = newTitle.choices[0]?.message.content?.trim() || conversation.title
+					newTitle = generatedTitle.choices[0]?.message.content?.trim() || conversation.title
+				}
+
+				const conversationUpdateData: Prisma.ConversationUpdateInput = { updatedAt: new Date() }
+
+				if (isNewConversation) {
+					conversationUpdateData.title = newTitle
 				}
 
 				const [assistantMessage] = await Promise.all([
@@ -114,39 +112,26 @@ export async function action({ request, params }: ActionFunctionArgs) {
 							conversationId: conversation.id,
 						},
 					}),
-					(async () => {
-						if (isNewConversation) {
-							await prisma.conversation.update({
-								where: { id: conversation.id, userId: user.id, deletedAt: null },
-								data: { title: generatedTitle, updatedAt: new Date() },
-							})
-						} else {
-							await prisma.conversation.update({
-								where: { id: conversation.id, userId: user.id, deletedAt: null },
-								data: { updatedAt: new Date() },
-							})
-						}
-					})(),
+					prisma.conversation.update({
+						where: { id: conversation.id, userId: user.id, deletedAt: null },
+						data: conversationUpdateData,
+					}),
 				])
 
 				enqueue('assistant-msg', { message: assistantMessage })
 			} catch (error) {
-				if (error.name === 'AbortError') {
-					enqueue('aborted', { message: 'Request was aborted' })
-				} else {
-					logger.error({
-						code: 'ERROR_OPENAI_STREAM',
-						error,
-					})
-					enqueue('error', { message: 'An error occured' })
-				}
+				logger.error({
+					code: 'ERROR_OPENAI_STREAM',
+					error,
+				})
+				enqueue('error', { message: 'An error occured' })
 			} finally {
 				controller.close()
 			}
 		},
 
 		cancel() {
-			abortController.abort()
+			// handle cancellation
 		},
 	}), {
 		headers: {
